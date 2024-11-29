@@ -14,7 +14,6 @@ func init(){
 
 
 func main(){
-	initialize.DB.AutoMigrate(&model.Todo{})
-	initialize.DB.AutoMigrate(&model.User{})
+	initialize.DB.AutoMigrate(&model.Todo{},&model.User{})
 	log.Println("Migrations done")
 }
