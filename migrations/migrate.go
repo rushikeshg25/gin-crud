@@ -1,8 +1,9 @@
-package migrations
+package main
 
 import (
 	"gin-todo/env"
 	"gin-todo/model"
+	"log"
 )
 
 
@@ -14,4 +15,5 @@ func init(){
 
 func main(){
 	env.DB.AutoMigrate(&model.Todo{})
+	log.Println("Migrations done")
 }

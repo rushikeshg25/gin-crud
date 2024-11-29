@@ -1,8 +1,8 @@
 package main
 
 import (
+	"gin-todo/controller"
 	"gin-todo/env"
-	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
@@ -14,10 +14,10 @@ func init(){
 
 func main() {
   r := gin.Default()
-  r.GET("/", func(c *gin.Context) {
-    c.JSON(http.StatusOK, gin.H{
-      "message": "pong",
-    })
-  })
+  r.GET("/", controller.GetTodos)
+  r.GET("/gettodo", controller.GetTodo)
+  r.POST("/addtodo",controller.AddTodo)
+  r.PUT("/updatetodo",controller.UpdateTodo)
+  r.DELETE("/deletetodo",controller.DeleteTodo)
   r.Run() 
 }
