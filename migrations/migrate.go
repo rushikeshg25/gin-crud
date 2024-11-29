@@ -1,20 +1,20 @@
 package main
 
 import (
-	"gin-todo/env"
+	"gin-todo/initialize"
 	"gin-todo/model"
 	"log"
 )
 
 
 func init(){
-	env.InitEnv()
-	env.ConnectDb()
+	initialize.InitEnv()
+	initialize.ConnectDb()
 }
 
 
 func main(){
-	env.DB.AutoMigrate(&model.Todo{})
-	env.DB.AutoMigrate(&model.User{})
+	initialize.DB.AutoMigrate(&model.Todo{})
+	initialize.DB.AutoMigrate(&model.User{})
 	log.Println("Migrations done")
 }

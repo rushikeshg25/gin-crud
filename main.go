@@ -2,14 +2,14 @@ package main
 
 import (
 	"gin-todo/controller"
-	"gin-todo/env"
+	"gin-todo/initialize"
 
 	"github.com/gin-gonic/gin"
 )
 
 func init(){
-	env.InitEnv()
-	env.ConnectDb()
+	initialize.InitEnv()
+	initialize.ConnectDb()
 }
 
 func main() {

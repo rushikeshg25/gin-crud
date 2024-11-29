@@ -1,7 +1,7 @@
 package controller
 
 import (
-	"gin-todo/env"
+	"gin-todo/initialize"
 	"gin-todo/model"
 	"net/http"
 
@@ -18,7 +18,7 @@ func AddTodo(c *gin.Context) {
 	newTodo:=model.Todo{
 		Title: body.Title,
 	}
-	result:=env.DB.Create(&newTodo)
+	result:=initialize.DB.Create(&newTodo)
 	if result.Error!=nil{
 		c.JSON(http.StatusBadRequest, gin.H{
 			"message": result.Error.Error(),
@@ -34,7 +34,7 @@ func GetTodo(c *gin.Context) {
 		Title string
 	}
 	c.Bind(&body)
-	Result:=env.DB.Where("title = ?", body.Title).Find(&model.Todo{})
+	Result:=initialize.DB.Where("title = ?", body.Title).Find(&model.Todo{})
 	if Result.Error!=nil{
 		c.JSON(http.StatusBadRequest, gin.H{
 			"message": Result.Error.Error(),
@@ -52,7 +52,7 @@ func UpdateTodo(c *gin.Context) {
 	}
 	c.Bind(&body)
 	var todo model.Todo
-	result:=env.DB.First(&todo, "title = ?", body.OldTitle)
+	result:=initialize.DB.First(&todo, "title = ?", body.OldTitle)
 	if result.Error!=nil{
 		c.JSON(http.StatusBadRequest, gin.H{
 			"message": result.Error.Error(),
@@ -60,7 +60,7 @@ func UpdateTodo(c *gin.Context) {
 		return
 	}
 	todo.Title=body.NewTitle
-	result=env.DB.Save(&todo)
+	result=initialize.DB.Save(&todo)
 	if result.Error!=nil{
 		c.JSON(http.StatusBadRequest, gin.H{
 			"message": result.Error.Error(),
@@ -75,7 +75,7 @@ func DeleteTodo(c *gin.Context) {
 		Title string
 	}
 	c.Bind(&body)
-	result:=env.DB.Where("title = ?", body.Title).Delete(&model.Todo{})
+	result:=initialize.DB.Where("title = ?", body.Title).Delete(&model.Todo{})
 	if result.Error!=nil{
 		c.JSON(http.StatusBadRequest, gin.H{
 			"message": result.Error.Error(),
@@ -91,7 +91,7 @@ func GetTodos(c *gin.Context) {
 	}
 	c.Bind(&body)
 	var todos []model.Todo
-	Result:=env.DB.Where("title <> ?", body.Title).Find(&todos)
+	Result:=initialize.DB.Where("title <> ?", body.Title).Find(&todos)
 	if Result.Error!=nil{
 		c.JSON(http.StatusBadRequest, gin.H{
 			"message": Result.Error.Error(),
