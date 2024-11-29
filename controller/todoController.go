@@ -70,7 +70,20 @@ func UpdateTodo(c *gin.Context) {
 	c.Status(http.StatusOK)
 }
 
-func DeleteTodo(c *gin.Context) {}
+func DeleteTodo(c *gin.Context) {
+	var body struct{
+		Title string
+	}
+	c.Bind(&body)
+	result:=env.DB.Where("title = ?", body.Title).Delete(&model.Todo{})
+	if result.Error!=nil{
+		c.JSON(http.StatusBadRequest, gin.H{
+			"message": result.Error.Error(),
+		})
+		return
+	}
+	c.Status(http.StatusOK)
+}
 
 func GetTodos(c *gin.Context) {
 	var body struct{
