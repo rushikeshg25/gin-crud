@@ -90,12 +90,13 @@ func GetTodos(c *gin.Context) {
 		Title string
 	}
 	c.Bind(&body)
-	Result:=env.DB.Where("title <> ?", body.Title).Find(&model.Todo{})
+	var todos []model.Todo
+	Result:=env.DB.Where("title <> ?", body.Title).Find(&todos)
 	if Result.Error!=nil{
 		c.JSON(http.StatusBadRequest, gin.H{
 			"message": Result.Error.Error(),
 		})
 		return
 	}
-	c.JSON(http.StatusOK, Result)
+	c.JSON(http.StatusOK, todos)
 }
