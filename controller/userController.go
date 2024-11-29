@@ -1,6 +1,12 @@
 package controller
 
-import "github.com/gin-gonic/gin"
+import (
+	"gin-todo/initialize"
+	"gin-todo/model"
+	"gin-todo/utils"
+
+	"github.com/gin-gonic/gin"
+)
 
 type reqBody struct{
 	Username string
@@ -17,6 +23,18 @@ func Signin(c *gin.Context) {
 func Signup(c *gin.Context) {
 	var body reqBody
 	c.Bind(&body)
+	newUser:=model.User{
+		Username: body.Username,
+		Password: body.Password,
+	}
+	result:=initialize.DB.Create(&newUser)
+	if result.Error!=nil{
+		c.JSON(400, gin.H{
+			"message": result.Error.Error(),
+		})
+		return
+	}
+	token,err:=utils.GenerateToken(newUser.ID)
 }
 
 
